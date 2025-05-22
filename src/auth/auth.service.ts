@@ -2,14 +2,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
-import { JwtConfigService } from '../shared/jwt/config/config.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private jwtConfigService: JwtConfigService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -31,7 +29,7 @@ export class AuthService {
   }
 
   logout(token: string) {
-    this.jwtConfigService.addToBlacklist(token.split(' ')[1]); // Remove 'Bearer ' prefix
+    // Removed JwtConfigService and blacklist functionality
     return { message: 'Logged out successfully' };
   }
 }

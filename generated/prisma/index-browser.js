@@ -140,7 +140,8 @@ exports.Prisma.ProductScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   supplierId: 'supplierId',
-  categoryId: 'categoryId'
+  categoryId: 'categoryId',
+  brandId: 'brandId'
 };
 
 exports.Prisma.ProductImageScalarFieldEnum = {
@@ -209,6 +210,14 @@ exports.Prisma.CategoryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BrandScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -246,7 +255,8 @@ exports.Prisma.ModelName = {
   ProductSize: 'ProductSize',
   Supplier: 'Supplier',
   DeliveryPerson: 'DeliveryPerson',
-  Category: 'Category'
+  Category: 'Category',
+  Brand: 'Brand'
 };
 
 /**

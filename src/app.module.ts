@@ -5,16 +5,29 @@ import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { JwtModule } from './shared/jwt/jwt.module';
+import { ProductsModule } from './products/products.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
+import { CategoriesModule } from './categories/categories.module';
+import { OrdersModule } from './orders/orders.module';
+import { UploadModule } from './upload/upload.module';
+import { BrandsModule } from './brands/brands.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    UsersModule, 
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UsersModule,
     AuthModule,
-    JwtModule
+    ProductsModule,
+    SuppliersModule,
+    CategoriesModule,
+    OrdersModule,
+    UploadModule,
+    BrandsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
+  exports: [PrismaService]
 })
 export class AppModule {}
