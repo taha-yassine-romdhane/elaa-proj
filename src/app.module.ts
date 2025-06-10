@@ -11,6 +11,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { UploadModule } from './upload/upload.module';
 import { BrandsModule } from './brands/brands.module';
+import { StockModule } from './stock/stock.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { BrandsModule } from './brands/brands.module';
     OrdersModule,
     UploadModule,
     BrandsModule,
+    StockModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
