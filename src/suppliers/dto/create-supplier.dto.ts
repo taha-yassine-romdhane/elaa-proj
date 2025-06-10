@@ -12,7 +12,4 @@ export class CreateSupplierDto {
   
   @ApiProperty()
   address: string;
-  
-  @ApiProperty({ required: false })
-  contactInfo?: string;
 }
