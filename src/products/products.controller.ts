@@ -19,6 +19,24 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get('by-color')
+  @ApiQuery({ name: 'color', required: true })
+  async findByColor(@Query('color') color: string) {
+    return this.productsService.findByColor(color);
+  }
+
+  @Get('by-category')
+  @ApiQuery({ name: 'categoryId', required: true, type: Number })
+  async findByCategory(@Query('categoryId') categoryId: number) {
+    return this.productsService.findByCategory(+categoryId);
+  }
+
+  @Get('by-brand')
+  @ApiQuery({ name: 'brandId', required: true, type: Number })
+  async findByBrand(@Query('brandId') brandId: number) {
+    return this.productsService.findByBrand(+brandId);
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
@@ -37,23 +55,5 @@ export class ProductsController {
   @Get(':id/images')
   getProductImages(@Param('id') id: string) {
     return this.productsService.getProductImages(+id);
-  }
-
-  @Get('by-color')
-  @ApiQuery({ name: 'color', required: true })
-  async findByColor(@Query('color') color: string) {
-    return this.productsService.findByColor(color);
-  }
-
-  @Get('by-category')
-  @ApiQuery({ name: 'categoryId', required: true, type: Number })
-  async findByCategory(@Query('categoryId') categoryId: number) {
-    return this.productsService.findByCategory(categoryId);
-  }
-
-  @Get('by-brand')
-  @ApiQuery({ name: 'brandId', required: true, type: Number })
-  async findByBrand(@Query('brandId') brandId: number) {
-    return this.productsService.findByBrand(brandId);
   }
 }
