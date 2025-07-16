@@ -1,0 +1,114 @@
+function closeModal() {
+  const maskToRemove = document.getElementById('loyoly-mask')
+  if (maskToRemove) {
+    document.body.removeChild(maskToRemove)
+  }
+  document.body.style.overflow = 'auto'
+}
+
+function appendModal(ref) {
+  if (document.getElementById('loyoly-mask')) {
+    return
+  }
+  const params = new URLSearchParams(document.currentScript.src.split('?')[1])
+  const shop = params.get('shop')
+  const langcode = window.loyoly_lang_code ?? ''
+  const currencycode = window.loyoly_money_code ?? ''
+  const currencyrate = window.loyoly_convert_rate ?? ''
+
+  const iframe = document.createElement('iframe')
+  iframe.id = 'loyoly-dialog'
+  iframe.src = `https://play.loyoly.io/play/shopify/referral?shop=${shop}&ref=${ref}&langcode=${langcode}&currencycode=${currencycode}&currencyrate=${currencyrate}`
+  iframe.style.position = 'absolute'
+  iframe.style.top = '50vh'
+  iframe.style.left = '50vw'
+  iframe.style.transform = 'translate(-50%, -50%)'
+  iframe.style.border = 0
+  iframe.allow = 'clipboard-read; clipboard-write'
+
+  const mask = document.createElement('div')
+  mask.id = 'loyoly-mask'
+  mask.style.position = 'fixed'
+  mask.style.top = 0
+  mask.style.left = 0
+  mask.style.width = '100%'
+  mask.style.height = '100%'
+  mask.style.zIndex = 9999
+  mask.style.backgroundColor = 'rgba(0, 0, 0, 0.25)'
+
+  mask.appendChild(iframe)
+
+  mask.addEventListener('click', function () {
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      closeModal()
+    }
+  })
+
+  document.body.appendChild(mask)
+
+  const style = document.createElement('style')
+  document.head.appendChild(style)
+
+  const styleSheet = style.sheet
+  styleSheet.insertRule(
+    `#loyoly-dialog {
+       width: 100vw;
+       height: 100vh;
+      }`,
+    0
+  )
+  styleSheet.insertRule(
+    `@media (min-width: 768px) {
+        #loyoly-dialog {
+         width: 729px;
+         height: 364px;
+       }
+      }`,
+    1
+  )
+  styleSheet.insertRule(
+    `@media (min-width: 1024px) {
+       #loyoly-dialog {
+         width: 985px;
+         height: 492px
+       }
+      }`,
+    2
+  )
+  styleSheet.insertRule(
+    `@media (min-width: 1440px) {
+        #loyoly-dialog {
+        width: 1040px;
+        height: 520px;
+        }
+      }`,
+    3
+  )
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    document.body.style.overflow = 'hidden'
+  }
+  window.addEventListener('message', function (e) {
+    if (e.data.modal === 'close' && e.data.isWeWiink) {
+      closeModal()
+    }
+    if (e.data.isWeWiink && e.data.promocode) {
+      const xhrDiscount = new XMLHttpRequest()
+      xhrDiscount.open('GET', `/discount/${e.data.promocode}`, true)
+      xhrDiscount.send()
+    }
+  })
+}
+
+function checkTriggerReferralFlow() {
+  let hash = window.location.hash
+  if (hash.startsWith('#ref')) {
+    hash = hash.substring(1)
+    const params = new URLSearchParams(hash)
+    const ref = params.get('ref')
+    if (ref) {
+      appendModal(ref)
+    }
+  }
+}
+
+checkTriggerReferralFlow()

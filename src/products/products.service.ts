@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
+  getFirst10() {
+    throw new Error('Method not implemented.');
+  }
+  count() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private prisma: PrismaService) {}
 
   async create(createProductDto: CreateProductDto) {
@@ -26,14 +32,14 @@ export class ProductsService {
 
   async findAll() {
     return this.prisma.product.findMany({
-      include: { supplier: true, category: true }
+      include: { supplier: true, category: true, images: true }
     });
   }
 
   async findOne(id: number) {
     return this.prisma.product.findUnique({
       where: { id },
-      include: { supplier: true, category: true }
+      include: { supplier: true, category: true, images: true }
     });
   }
 
@@ -95,6 +101,16 @@ export class ProductsService {
   }
 
   async findByCategory(categoryId: number) {
+    // First verify the category exists
+    const category = await this.prisma.category.findUnique({
+      where: { id: categoryId }
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${categoryId} not found`);
+    }
+
+    // Then get products for this category
     return this.prisma.product.findMany({
       where: { 
         categoryId,
